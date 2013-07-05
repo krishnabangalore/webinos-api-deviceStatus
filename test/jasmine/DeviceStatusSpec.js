@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  * Copyright 2012 TU München 
+ * Copyright 2012 UNICT
  ******************************************************************************/
 
 describe("DeviceStatus API", function() {
@@ -336,7 +337,7 @@ describe("DeviceStatus API", function() {
 			});
 		});
 
-               it("can add/remove a watcher to monitor properties changes", function() {
+                it("can add/remove a watcher to monitor properties changes", function() {
 			var propertyValue;
 			var watchId;
 
@@ -409,9 +410,9 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 		});
-               //---- CPU Ends here----
+                //---- CPU Ends here----
 
-               //-----Test for Device Starts here---- 
+                //-----Test for Device Starts here---- 
 		it("can retrieve the _default component of a supported aspect (eg. Device)", function() {
 			var components;
 
@@ -512,7 +513,7 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 
-                 });
+                });
 
                 it("let the user know if an aspect's property is supported", function() {
 			var isPropertySupported;
@@ -566,9 +567,9 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 
-                 });
+               });
 
-                it("let the user know if an aspect's property is supported", function() {
+               it("let the user know if an aspect's property is supported", function() {
 			var isPropertySupported;
 
 			devicestatusService.isSupported("Device", "version", function(ret) {
@@ -620,9 +621,9 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 
-                 });
+                });
 
-               it("let the user know if an aspect's property is supported", function() {
+                it("let the user know if an aspect's property is supported", function() {
 			var isPropertySupported;
 
 			devicestatusService.isSupported("Device", "vendor", function(ret) {
@@ -672,14 +673,12 @@ describe("DeviceStatus API", function() {
 
 			runs(function() {
 				expect(typeof(propertyValue)).toEqual("string");
-			});
+	        });
 
-                 });
-        //-------Device Test End Here-----
-			   
-		//-------Display Test Starts------
+                });
+                //-------Device Test End Here-----
  
-         //-----Test for Display Starts here---- 
+                //-----Test for Display Starts here---- 
 		it("can retrieve the _default component of a supported aspect (eg. Display)", function() {
 			var components;
 
@@ -760,7 +759,7 @@ describe("DeviceStatus API", function() {
 			});
 		});
 
-        it("can add/remove a watcher to monitor properties changes", function() {
+                it("can add/remove a watcher to monitor properties changes", function() {
 			var propertyValue;
 			var watchId;
 
@@ -993,7 +992,7 @@ describe("DeviceStatus API", function() {
 			});
 		});
 
-		        it("let the user know if an aspect's property is supported", function() {
+		it("let the user know if an aspect's property is supported", function() {
 			var isPropertySupported;
 
 			devicestatusService.isSupported("Display", "colorDepth", function(ret) {
@@ -1045,7 +1044,7 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 		});
-        //---Display Ends Here----
+                //---Display Ends Here----
 		
 		//---Tests for Input Device Starts Here----
 		it("can retrieve the _default component of a supported aspect (eg. InputDevice)", function() {
@@ -1128,7 +1127,7 @@ describe("DeviceStatus API", function() {
 			});
 		});
 
-        it("can add/remove a watcher to monitor properties changes", function() {
+               it("can add/remove a watcher to monitor properties changes", function() {
 			var propertyValue;
 			var watchId;
 
@@ -1148,8 +1147,1156 @@ describe("DeviceStatus API", function() {
 				expect(typeof(propertyValue)).toEqual("string");
 			});
 		});
-        //------Input Device Tests End Here----
-//----------------
+                //------Input Device Tests End Here----
+			
+		//-----Test for Memory Unit Starts here---- 
+		it("can retrieve the _default component of a supported aspect (eg. Memory Unit)", function() {
+			var components;
+
+			devicestatusService.getComponents("MemoryUnit", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components).toContain("_default");
+			});
+		});
+
+		it("doesn't retrieve components for not supported aspects", function() {
+			var components;
+
+			devicestatusService.getComponents("A not supported aspect", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components.length).not.toBeDefined();
+			});
+		});
+
+		it("let the user know if an aspect is supported", function() {
+			var isAspectSupported;
+
+			devicestatusService.isSupported("MemoryUnit", null, function(ret) {
+				isAspectSupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isAspectSupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isAspectSupported)).toEqual("boolean");
+			});
+		});
+
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("MemoryUnit", "size", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"size"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"size"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+		
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("MemoryUnit", "removable", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"removable"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"removable"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+		
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("MemoryUnit", "availableSize", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"availableSize"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"availableSize"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("MemoryUnit", "volatile", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"volatile"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"MemoryUnit", property:"volatile"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+		
+		//-----Test for OperatingSystem Starts here---- 
+		it("can retrieve the _default component of a supported aspect (eg. OperatingSystem)", function() {
+			var components;
+
+			devicestatusService.getComponents("OperatingSystem", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components).toContain("_default");
+			});
+		});
+
+		it("doesn't retrieve components for not supported aspects", function() {
+			var components;
+
+			devicestatusService.getComponents("A not supported aspect", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components.length).not.toBeDefined();
+			});
+		});
+
+		it("let the user know if an aspect is supported", function() {
+			var isAspectSupported;
+
+			devicestatusService.isSupported("OperatingSystem", null, function(ret) {
+				isAspectSupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isAspectSupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isAspectSupported)).toEqual("boolean");
+			});
+		});
+
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("OperatingSystem", "language", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"language"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"language"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("OperatingSystem", "version", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"version"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"version"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("OperatingSystem", "name", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"name"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"name"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("OperatingSystem", "vendor", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"vendor"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"OperatingSystem", property:"vendor"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		//-----Test for WiFiHardware Starts here---- 
+		it("can retrieve the _default component of a supported aspect (eg. WiFiHardware)", function() {
+			var components;
+
+			devicestatusService.getComponents("WiFiHardware", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components).toContain("_default");
+			});
+		});
+
+		it("doesn't retrieve components for not supported aspects", function() {
+			var components;
+
+			devicestatusService.getComponents("A not supported aspect", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components.length).not.toBeDefined();
+			});
+		});
+
+		it("let the user know if an aspect is supported", function() {
+			var isAspectSupported;
+
+			devicestatusService.isSupported("WiFiHardware", null, function(ret) {
+				isAspectSupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isAspectSupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isAspectSupported)).toEqual("boolean");
+			});
+		});
+
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiHardware", "status", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiHardware", property:"status"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiHardware", property:"status"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                //-----Test for WiFiNetwork Starts here---- 
+		it("can retrieve the _default component of a supported aspect (eg. WiFiNetwork)", function() {
+			var components;
+
+			devicestatusService.getComponents("WiFiNetwork", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components).toContain("_default");
+			});
+		});
+
+		it("doesn't retrieve components for not supported aspects", function() {
+			var components;
+
+			devicestatusService.getComponents("A not supported aspect", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components.length).not.toBeDefined();
+			});
+		});
+
+		it("let the user know if an aspect is supported", function() {
+			var isAspectSupported;
+
+			devicestatusService.isSupported("WiFiNetwork", null, function(ret) {
+				isAspectSupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isAspectSupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isAspectSupported)).toEqual("boolean");
+			});
+		});
+
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiNetwork", "ssid", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"ssid"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+                it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"ssid"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiNetwork", "signalStrength", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"signalStrength"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"signalStrength"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiNetwork", "networkStatus", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"networkStatus"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"networkStatus"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiNetwork", "ipAddress", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"ipAddress"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"ipAddress"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiFiNetwork", "macAddress", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"macAddress"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiFiNetwork", property:"macAddress"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+                 //-------WiFiNetwork Ends Here-----
+		
+		//-----Test for WiredNetwork Starts here---- 
+		it("can retrieve the _default component of a supported aspect (eg. WiredNetwork)", function() {
+			var components;
+
+			devicestatusService.getComponents("WiredNetwork", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components).toContain("_default");
+			});
+		});
+
+		it("doesn't retrieve components for not supported aspects", function() {
+			var components;
+
+			devicestatusService.getComponents("A not supported aspect", function(c) {
+				components = c;
+			});
+
+			waitsFor(function() {
+				return components;
+			}, "getComponents failed", 500);
+
+			runs(function() {
+				expect(components.length).not.toBeDefined();
+			});
+		});
+
+		it("let the user know if an aspect is supported", function() {
+			var isAspectSupported;
+
+			devicestatusService.isSupported("WiredNetwork", null, function(ret) {
+				isAspectSupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isAspectSupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isAspectSupported)).toEqual("boolean");
+			});
+		});
+
+		it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiredNetwork", "networkStatus", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"networkStatus"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+        it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"networkStatus"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiredNetwork", "ipAddress", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"ipAddress"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"ipAddress"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		        it("let the user know if an aspect's property is supported", function() {
+			var isPropertySupported;
+
+			devicestatusService.isSupported("WiredNetwork", "macAddress", function(ret) {
+				isPropertySupported = ret.isSupported;
+			});
+
+			waitsFor(function() {
+				return isPropertySupported;
+			}, "isSupported failed", 500);
+
+			runs(function() {
+				expect(typeof(isPropertySupported)).toEqual("boolean");
+			});
+		});
+
+		it("can retrieve the value for a supported property", function() {
+			var propertyValue;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"macAddress"};
+			successCB = function (value) { propertyValue = value };
+			devicestatusService.getPropertyValue(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "getPropertyValue failed", 500);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+
+		it("can add/remove a watcher to monitor properties changes", function() {
+			var propertyValue;
+			var watchId;
+
+			var prop = {component:"_default", aspect:"WiredNetwork", property:"macAddress"};
+			successCB = function (value, ref) {
+				propertyValue = value;
+				devicestatusService.clearPropertyChange(watchId);
+			};
+
+			watchId = devicestatusService.watchPropertyChange(successCB, null, prop);
+
+			waitsFor(function() {
+				return propertyValue;
+			}, "watchPropertyChange failed", 5000);
+
+			runs(function() {
+				expect(typeof(propertyValue)).toEqual("string");
+			});
+		});
+        //-------Wired Network Ends Here----		
+        //----------------
 
 	});
 
